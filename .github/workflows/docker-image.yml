@@ -29,28 +29,23 @@ jobs:
         run: npm test
 
       # 5. Log in to DockerHub
+     
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 6. Debug: print Docker username from secrets
-      - name: Debug Docker username environment
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      - name: Trim DOCKER_USERNAME secret and set env var
+        run: echo "DOCKER_USERNAME=$(echo '${{ secrets.DOCKER_USERNAME }}' | tr -d '\n\r ')" >> $GITHUB_ENV
+
+      - name: Debug trimmed username
         run: |
           echo "DOCKER_USERNAME='${DOCKER_USERNAME}'"
           echo "Building image with tag: ${DOCKER_USERNAME}/nodejs-demo-app:latest"
 
-      # 7. Build Docker image
       - name: Build Docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: docker build -t $DOCKER_USERNAME/nodejs-demo-app:latest .
 
-      # 8. Push Docker image to DockerHub
-      - name: Push Docker image to DockerHub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      - name: Push Docker image
         run: docker push $DOCKER_USERNAME/nodejs-demo-app:latest
