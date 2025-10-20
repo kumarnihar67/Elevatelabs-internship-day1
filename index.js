@@ -1,12 +1,9 @@
-const http = require("http");
-const port = process.env.PORT || 3000;
+const http = require('http');
 
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Hello from Node.js demo App deployed via CI/CD!\n");
+  res.end('Hello from Node.js running in Docker!');
 });
 
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
+server.listen(3000, () => {
+  console.log('Server is listening on port 3000');
 });
-
