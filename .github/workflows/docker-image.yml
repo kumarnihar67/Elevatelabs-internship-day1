@@ -31,7 +31,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/nodejs‑demo‑app:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/your-app-name .
+
 
       - name: Push Docker image to DockerHub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/nodejs‑demo‑app:latest
